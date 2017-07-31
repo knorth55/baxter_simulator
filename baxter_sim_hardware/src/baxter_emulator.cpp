@@ -502,6 +502,12 @@ void baxter_emulator::reset_head_nod(const ros::TimerEvent &t) {
 void baxter_emulator::update_jnt_st(const sensor_msgs::JointState &msg) {
   jstate_msg = msg;
   float threshold = 0.0009;
+left_gravity.commanded_position.resize(left_gravity.name.size());
+left_gravity.commanded_velocity.resize(left_gravity.name.size());
+left_gravity.commanded_effort.resize(left_gravity.name.size());
+right_gravity.commanded_position.resize(left_gravity.name.size());
+right_gravity.commanded_velocity.resize(left_gravity.name.size());
+right_gravity.commanded_effort.resize(left_gravity.name.size());
 left_gravity.actual_position.resize(left_gravity.name.size());
 left_gravity.actual_velocity.resize(left_gravity.name.size());
 left_gravity.actual_effort.resize(left_gravity.name.size());
@@ -525,12 +531,18 @@ right_gravity.actual_effort.resize(left_gravity.name.size());
 	else {
 	   for (int j=0;j<left_gravity.name.size();j++) {
 	     if (msg.name[i] == left_gravity.name[j]) {
+	       left_gravity.commanded_position[j] = msg.position[i];
+	       left_gravity.commanded_velocity[j] = msg.velocity[i];
+	       left_gravity.commanded_effort[j] = msg.effort[i];
 	       left_gravity.actual_position[j] = msg.position[i];
 	       left_gravity.actual_velocity[j] = msg.velocity[i];
 	       left_gravity.actual_effort[j] = msg.effort[i];
 	       break;
 	     }
 	     else if(msg.name[i] == right_gravity.name[j]) {
+	       right_gravity.commanded_position[j] = msg.position[i];
+	       right_gravity.commanded_velocity[j] = msg.velocity[i];
+	       right_gravity.commanded_effort[j] = msg.effort[i];
 	       right_gravity.actual_position[j] = msg.position[i];
 	       right_gravity.actual_velocity[j] = msg.velocity[i];
 	       right_gravity.actual_effort[j] = msg.effort[i];
